@@ -3,6 +3,8 @@ import { Alert, Button, Form, Input, message, Rate, Upload } from "antd";
 
 import { UploadOutlined } from "@ant-design/icons";
 
+import { db } from "../firebase";
+
 const NewMovie = () => {
   const [hasErrors, setHasErrors] = useState(false);
   const layout = {
@@ -15,6 +17,10 @@ const NewMovie = () => {
 
   const onFinish = (values) => {
     console.log("Success:", values);
+    db.ref("movies").push({
+      ...values,
+      poster: null,
+    });
   };
 
   const onFinishFailed = (errorInfo) => {
