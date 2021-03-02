@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Card, Row, Col, Button, Modal, Descriptions } from "antd";
+import React, { useEffect, useState } from "react";
+import { Button, Card, Col, Descriptions, Modal, Row } from "antd";
 
 const ListMovies = ({ movies }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
