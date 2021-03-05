@@ -2,24 +2,34 @@ import "../styles/App.css";
 import React from "react";
 import MainLayout from "./MainLayout";
 import HomePage from "../pages/HomePage";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import AboutPage from "../pages/AboutPage";
 import UsersPage from "../pages/UsersPage";
 import NotFoundPage from "../pages/NotFoundPage";
+import Routes from "../constants/routes";
+import RegisterPage from "../pages/RegisterPage";
+import { AuthProvider } from "../lib/auth";
+import LoginPage from "../pages/LoginPage";
 
 function App() {
   return (
     <>
-      <Router>
+      <AuthProvider>
         <MainLayout>
           <Switch>
-            <Route path="/" exact={true}>
+            <Route path={Routes.HOME} exact={true}>
               <HomePage />
             </Route>
-            <Route path="/about">
+            <Route path={Routes.REGISTER}>
+              <RegisterPage />
+            </Route>
+            <Route path={Routes.LOGIN}>
+              <LoginPage />
+            </Route>
+            <Route path={Routes.ABOUT}>
               <AboutPage />
             </Route>
-            <Route path="/users">
+            <Route path={Routes.USERS}>
               <UsersPage />
             </Route>
             <Route>
@@ -27,7 +37,7 @@ function App() {
             </Route>
           </Switch>
         </MainLayout>
-      </Router>
+      </AuthProvider>
     </>
   );
 }

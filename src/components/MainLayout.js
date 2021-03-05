@@ -3,9 +3,9 @@ import { Layout, Menu } from "antd";
 import MainMenu from "./MainMenu";
 import "../styles/layout.css";
 import {
-  UserOutlined,
-  NotificationOutlined,
   LaptopOutlined,
+  NotificationOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 
 const { SubMenu } = Menu;
