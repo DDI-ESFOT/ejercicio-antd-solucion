@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Menu } from "antd";
+import { Button, Menu, Spin } from "antd";
 import { Link } from "react-router-dom";
 import Routes from "../constants/routes";
 import { useAuth } from "../lib/auth";
@@ -17,10 +17,6 @@ const menuItems = [
   {
     to: Routes.ABOUT,
     text: "About",
-  },
-  {
-    to: Routes.REGISTER,
-    text: "Register",
   },
 ];
 const { SubMenu } = Menu;
@@ -40,7 +36,18 @@ const MainMenu = () => {
         <Link to="notexist">No existe</Link>
       </Menu.Item>
 
-      {user ? (
+      {user === null ? (
+        <Spin />
+      ) : user === false ? (
+        <>
+          <Menu.Item>
+            <Link to={Routes.LOGIN}>Ingresar</Link>
+          </Menu.Item>
+          <Menu.Item>
+            <Link to={Routes.REGISTER}>Registrarme</Link>
+          </Menu.Item>
+        </>
+      ) : (
         <SubMenu key="sub1" title={user.email}>
           <Menu.ItemGroup key="g1" title="Tu cuenta">
             <Menu.Item key="1" icon={<LogoutOutlined />}>
@@ -50,10 +57,6 @@ const MainMenu = () => {
             </Menu.Item>
           </Menu.ItemGroup>
         </SubMenu>
-      ) : (
-        <Menu.Item>
-          <Link to={Routes.LOGIN}>Ingresar</Link>
-        </Menu.Item>
       )}
     </Menu>
   );

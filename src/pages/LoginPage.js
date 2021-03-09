@@ -4,6 +4,7 @@ import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Link, useHistory } from "react-router-dom";
 import Routes from "../constants/routes";
 import { useAuth } from "../lib/auth";
+import withoutAuth from "../hocs/withoutAuth";
 
 const LoginPage = () => {
   const history = useHistory();
@@ -62,4 +63,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default withoutAuth(LoginPage);

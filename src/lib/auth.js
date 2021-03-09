@@ -2,7 +2,7 @@
  * Created by chalosalvador on 2/2/21
  */
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { auth } from "../firebase";
+import { auth, db, storage } from "../firebase";
 import translateMessage from "../utils/translateMessage";
 import { message } from "antd";
 
@@ -37,20 +37,42 @@ function useAuthProvider() {
     }
   };
 
-  async function register({ email, password }) {
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then((user) => {
-        // Signed in
-        message.success("Usuario registrado");
-        handleUser(user);
-      })
-      .catch((error) => {
-        console.log("error", error);
-        const errorCode = error.code;
-        message.error(translateMessage(errorCode));
-        handleUser(false);
+  async function register(data) {
+    console.log("data", data);
+    try {
+      const userData = await auth.createUserWithEmailAndPassword(
+        data.email,
+        data.password
+      );
+      console.log("USER", user);
+      const { uid } = userData.user;
+
+      let photoURL =
+        "https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?b=1&k=6&m=1223671392&s=612x612&w=0&h=5VMcL3a_1Ni5rRHX0LkaA25lD_0vkhFsb1iVm1HKVSQ=";
+      if (data.photo) {
+        const snapshot = await storage.ref(`users/${uid}`).put(data.photo);
+        photoURL = await snapshot.ref.getDownloadURL();
+      }
+
+      const { name, email, lastname } = data;
+      await db.ref(`users/${userData.user.uid}`).set({
+        name,
+        lastname,
+        email,
+        photoURL,
+        uid,
       });
+
+      message.success("Usuario registrado");
+      handleUser(user);
+      // return true;
+    } catch (error) {
+      console.log("error", error);
+      const errorCode = error.code;
+      // message.error(translateMessage(errorCode));
+      handleUser(false);
+      throw error;
+    }
   }
 
   async function login(email, password) {
